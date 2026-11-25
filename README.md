@@ -1,3 +1,4 @@
+[paper/Sidon-subsets.pdf](paper/Sidon-subsets.pdf) — AI assistance disclosed in the paper
 # Sidon subsets of finite real sets
 
 Dohyun Park, Department of Mechanical Engineering, Seoul National University.
