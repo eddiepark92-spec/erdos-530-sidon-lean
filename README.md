@@ -1,6 +1,8 @@
 [paper/Sidon-subsets.pdf](paper/Sidon-subsets.pdf) — AI assistance disclosed in the paper
 # Sidon subsets of finite real sets
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24528338.svg)](https://doi.org/10.5281/zenodo.24528338)
+
 Dohyun Park, Department of Mechanical Engineering, Seoul National University.
 
 For every ε > 0 there is an n₀ such that for all n ≥ n₀, every n-element set A of real numbers contains a Sidon subset S with |S| ≥ (2/(3√3) − ε)√n. A Sidon set has distinct sums for distinct unordered pairs, allowing either pair to contain an element twice. The conjecture that the optimal asymptotic coefficient is 1 remains open. [Erdős problem 530](https://www.erdosproblems.com/530)

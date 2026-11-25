@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Please cite the archived release when using this formalization."
+type: software
+title: "v1.0 — Erdős #530 Sidon subsets (Lean 4)"
+authors:
+  - family-names: Park
+    given-names: Dohyun
+    affiliation: Seoul National University
+version: "1.0"
+doi: 10.5281/zenodo.24528338
+license: MIT
+repository-code: "https://github.com/eddiepark92-spec/erdos-530-sidon-lean"
