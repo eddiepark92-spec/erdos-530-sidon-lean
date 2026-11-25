@@ -1,0 +1,59 @@
+name = "SidonSubsets"
+version = "1.1.0"
+defaultTargets = ["Freiman", "Affine", "Compression", "Ruzsa", "LargePrime", "Rounding", "IntegerBound", "RealModel", "RealBound", "Quarter", "StrongBertrand", "Peak", "AsymptoticBound", "PNTDensity", "Optimal"]
+moreLeanArgs = ["-DwarningAsError=true"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "c44e0c8ee63ca166450922a373c7409c5d26b00b"
+
+[[lean_lib]]
+name = "Freiman"
+
+[[lean_lib]]
+name = "Affine"
+
+[[lean_lib]]
+name = "Compression"
+
+[[lean_lib]]
+name = "Ruzsa"
+
+[[lean_lib]]
+name = "LargePrime"
+
+[[lean_lib]]
+name = "Rounding"
+
+[[lean_lib]]
+name = "IntegerBound"
+
+[[lean_lib]]
+name = "RealModel"
+
+[[lean_lib]]
+name = "RealBound"
+
+[[lean_lib]]
+name = "Quarter"
+
+[[lean_lib]]
+name = "StrongBertrand"
+
+[[lean_lib]]
+name = "Peak"
+
+[[require]]
+name = "PrimeNumberTheoremAnd"
+git = "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd.git"
+rev = "426b540a86d5b4a103cec5528e68168ea172da66"
+
+[[lean_lib]]
+name = "AsymptoticBound"
+
+[[lean_lib]]
+name = "PNTDensity"
+
+[[lean_lib]]
+name = "Optimal"

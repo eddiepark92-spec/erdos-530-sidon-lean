@@ -1,0 +1,273 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\hypersetup{pdftitle={Every n-point real set contains a Sidon subset of size at least (2/(3 sqrt(3)) - o(1)) sqrt(n)},pdfauthor={Dohyun Park}}
+\title{Every $n$-point real set contains a Sidon subset\protect\\ of size at least $\bigl(2/(3\sqrt{3})-o(1)\bigr)\sqrt{n}$}
+\author{Dohyun Park\\[3pt]
+\small Department of Mechanical Engineering, Seoul National University\\
+\small\href{mailto:eddiepark92@gmail.com}{\texttt{eddiepark92@gmail.com}}}
+\date{November 25, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For every $\varepsilon>0$ and all sufficiently large $n$, every set of $n$ real numbers contains a Sidon subset of size at least $(2/(3\sqrt{3})-\varepsilon)\sqrt{n}$. The coefficient doubles the one obtained by Bailleul and Riblet and is $\sqrt{2}$ times the coefficient reported in an August 2026 SciNet finding. The conjectured coefficient $1$ remains open. The proof samples a random affine map into a prime field and counts occupied residue classes indexed by a cyclic Sidon set. A finite version guarantees at least $385$ elements when $n=10^6$. The main theorem has been formalized in Lean.
+\end{abstract}
+
+\section{The guaranteed size}
+
+A subset \(S\) of an abelian group is \emph{Sidon} if
+\(a+b=c+d\), with \(a,b,c,d\in S\), implies
+\((a,b)=(c,d)\) or \((a,b)=(d,c)\). The definition includes repeated
+summands. Write \(H(n)\) for the minimum, over \(n\)-element subsets of
+\(\R\), of the size of a largest Sidon subset. The problem database credits the original question to Riddell \cite{riddell}. In the formulation of Erd\H{o}s problem~\#530, the question is whether
+\(H(n)=(1+o(1))\sqrt n\) \cite{erdos}.
+
+\begin{theorem}\label{th:optimal}
+For every $\varepsilon>0$ there is an $n_0$ such that every finite $A\subset\R$ of size $n\ge n_0$ contains a Sidon subset of cardinality at least
+\[
+ \left(\frac{2}{3\sqrt3}-\varepsilon\right)\sqrt n .
+\]
+Equivalently, $\displaystyle\liminf_{n\to\infty} H(n)/\sqrt n\ge 2/(3\sqrt3)$.
+\end{theorem}
+
+Koml\'os, Sulyok and Szemer\'edi established a general comparison theorem
+for sets avoiding linear configurations \cite{KSS}. For Sidon subsets,
+Abbott obtained every coefficient below \(2/25\) \cite{abbott}.
+Bailleul and Riblet proved a lower coefficient of
+\(1/(3\sqrt3)=0.19245\ldots\) by compressing a subset into a cyclic
+group and applying a Singer covering \cite{BR}. An August 2026
+agent-authored SciNet posting reports an improvement to
+\(\sqrt6/9=0.27216\ldots\). It uses reflection to halve the pair-collision
+estimate in the unshifted dilation argument \cite{scinet}.
+The coefficient in Theorem~\ref{th:optimal} is twice the Bailleul--Riblet coefficient for real sets and $\sqrt2$ times the coefficient in that public posting. I am not aware of a better universal lower coefficient for arbitrary finite sets of real numbers. The
+coefficient \(1\) in the Erd\H{o}s question remains open.
+
+\begin{theorem}\label{th:main}
+For every integer \(n\ge0\),
+\[
+  36n\le343\bigl(H(n)+4\bigr)^2,\qquad
+  H(n)\ge\left\lceil \frac{6}{7\sqrt7}\sqrt n-4\right\rceil .
+\]
+\end{theorem}
+
+\begin{theorem}\label{th:param}
+For each prime \(q\), put \(m=q(q-1)\) and \(b=q-1\). For every \(n\ge0\),
+\begin{equation}\label{eq:param}
+  2mbn\ \le\ 4m^2 H(n)+b\binom n2 .
+\end{equation}
+If \(q\ge3\) and \(n_q=\lfloor4q(q-1)/3\rfloor\), then
+\[
+  H(n_q)\ \ge\ \left\lceil\frac{4(q-1)}9\right\rceil .
+\]
+In particular,
+\(\displaystyle\limsup_{n\to\infty}H(n)/\sqrt n\ge2/(3\sqrt3)\).
+\end{theorem}
+
+For \(n=10^6\), Theorem~\ref{th:main} guarantees \(320\) elements.
+The parameter inequality gives more information at this size. Taking
+the prime \(q=863\) in \eqref{eq:param} gives \(H(10^6)\ge385\),
+by rounding a lower bound of \(384.6676\ldots\) upwards.
+
+\section{Occupancy of a cyclic Sidon set}
+
+We first work over the integers. Let \(A\subset\Z\) have \(n\) elements
+and let \(B\subset\Z/m\Z\) be Sidon with \(|B|=b\) and \(m\ge1\).
+Write \(h(A)\) for the maximum size of a Sidon subset of \(A\).
+
+\begin{lemma}\label{lem:template}
+For every such \(A,B\),
+\[
+  2mbn\le 4m^2 h(A)+b\binom n2 .
+\]
+\end{lemma}
+\begin{proof}
+Take a prime \(P\) larger than every absolute difference between elements
+of \(A\). Choose \((u,v)\) uniformly from \(\F_P^2\), allowing \(u=0\),
+and write \(X_a\) for the representative in \([0,P)\) of \(ua+v\).
+For \(a\ne a'\), the map \((u,v)\mapsto(ua+v,ua'+v)\) is bijective.
+The difference of the two prescribed values determines \(u\), then either
+value determines \(v\). Thus each \(X_a\) is uniform and each pair
+\((X_a,X_{a'})\) has the uniform joint distribution.
+
+Set \(L=\lfloor P/(2m)\rfloor\). Represent \(t\in B\) by its integer
+in \([0,m)\) and associate to it the window
+\[
+ W_t=\{t+mj:0\le j<L\}.
+\]
+Each window has \(L\) residues, all strictly less than \(mL\le P/2\).
+The probability that a fixed \(a\) hits \(W_t\) is \(L/P\). Two distinct
+points both hit \(W_t\) with probability \(L^2/P^2\). If \(K_t\) is the
+number of inputs in \(W_t\), then
+\(\mathbf1_{\{K_t>0\}}\ge K_t-\binom{K_t}{2}\) for each integer
+\(K_t\ge0\). Taking expectations and summing over \(t\in B\), some
+choice of \((u,v)\) occupies at least
+\begin{equation}\label{eq:occ}
+  b\left(\frac{nL}{P}-\binom n2\frac{L^2}{P^2}\right)
+\end{equation}
+distinct windows. This argument uses only the distribution of one or two
+images at a time.
+
+Choose one input from each occupied window to form \(S\).
+Suppose \(a+b'=c+d\) among elements of \(S\). The two sums of their four
+affine images are congruent modulo \(P\). Both sums of their nonnegative
+representatives are strictly less than \(P\), so they are equal as
+integers. Reduction modulo \(m\) gives an equality of pair sums among the
+window labels. Since \(B\) is cyclic Sidon, the unordered pairs of labels
+coincide. Each label has exactly one chosen representative in \(S\), so
+the unordered pairs of inputs coincide as well.
+
+Consequently \(h(A)\) bounds \eqref{eq:occ} for every sufficiently
+large prime \(P\). Letting \(P\) tend to infinity gives the stated inequality.
+The Lean proof removes the floor by integer arithmetic. For \(D=2m\)
+it takes \(P>D^2bn\) as well as injectivity on \(A\). The inequalities
+\(DL\le P\le DL+D\) then give the same integral conclusion.
+\end{proof}
+
+For the modulus \(m=q(q-1)\), Ruzsa's construction
+\cite[Theorem~4.4]{ruzsa} gives \(b=q-1\). To see this, choose a
+generator \(g\) of \(\F_q^\times\). Under the Chinese remainder
+identification, take the graph
+\[
+  B=\{(i,g^i):i\in\Z/(q-1)\Z\}
+     \subset \Z/(q-1)\Z\times\F_q .
+\]
+Equality of two graph pair sums gives equality of the sums of the
+second coordinates. Equality of the first-coordinate sums gives equality
+of their products. The unordered pair of field elements is recovered as
+the multiset of roots of its monic quadratic. The distinct powers of
+\(g\) recover the indices. Lemma~\ref{lem:template} therefore proves
+\eqref{eq:param} for integer inputs.
+
+For a finite real set \(A\), take a rational linear functional on the
+rational span of \(A\) that is injective on \(A\cup(A+A)\). Such a
+functional exists because the finitely many proper hyperplanes in the
+dual corresponding to differences of distinct points in this union cannot
+cover the dual over \(\mathbb Q\). Clearing the denominators of the
+images of \(A\) produces an injective integer model preserving and
+reflecting every equality of two-term sums. Any Sidon subset in the model
+thus pulls back with its full cardinality, proving \eqref{eq:param}
+for real inputs.
+
+\section{Choosing the prime}
+
+\begin{proof}[Proof of Theorem~\ref{th:main}]
+Let \(r=\lfloor\sqrt{n/112}\rfloor\).
+For \(r=0\) the assertion follows even from the empty subset.
+For \(r\ge1\), put \(k=7r\) and restrict attention to
+\(t=16r(7r-1)\le112r^2\le n\) of the input elements.
+Bertrand's postulate gives a prime \(q\) with \(k<q\le2k\).
+Writing \(y=k/q\in[1/2,1]\), \eqref{eq:param} gives a subset of size
+\(s\) satisfying
+\begin{align*}
+s &\ge \frac{t}{2q}\left(1-\frac{t-1}{4q(q-1)}\right)\\
+  &\ge \frac87(k-1)y\left(1-\frac47 y^2\right)
+   \ge \frac{24}{49}(k-1).
+\end{align*}
+Indeed, \(t=16k(k-1)/7\) and \((k-1)/(q-1)\le k/q\).
+The last inequality follows from
+\(7y-4y^3-3=(2y-1)(1-y)(2y+3)\ge0\).
+Thus \(7(s+4)\ge24(r+1)\). Squaring and using
+\(n<112(r+1)^2\) proves \(36n\le343(s+4)^2\).
+\end{proof}
+
+\begin{proof}[Proof of the prime-indexed conclusion in Theorem~\ref{th:param}]
+Let \(m=q(q-1)\), \(n=\lfloor4m/3\rfloor\) and \(e=4m-3n\in\{0,1,2\}\).
+Then
+\[
+  36mn-9n(n-1)-32m^2=12m-4me-3e-e^2\ge0,
+\]
+since \(m\ge6\). Substituting in \eqref{eq:param} gives
+\(9H(n)\ge4(q-1)\). As the primes \(q\) increase, \(n\sim4q^2/3\)
+and \(4(q-1)/(9\sqrt n)\to2/(3\sqrt3)\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{th:optimal}]
+For each $n\ge1$ choose the least prime $q=q(n)$ exceeding $(\sqrt3/2)\sqrt n$. For each fixed $\eta>0$ there is a prime between $x$ and $(1+\eta)x$ for all sufficiently large $x$, by the prime number theorem. Thus $q/\sqrt n\to z=\sqrt3/2$ and $(q-1)/\sqrt n\to z$.
+Dividing \eqref{eq:param} by $4m^2\sqrt n$ gives
+\[
+ \frac{H(n)}{\sqrt n}\ \ge\ \frac{1}{2(q/\sqrt n)}
+ -\frac{1-1/n}{8((q-1)/\sqrt n)(q/\sqrt n)^2}.
+\]
+The right side tends to $1/(2z)-1/(8z^3)=2/(3\sqrt3)$. The choice of $q(n)$ depends only on the input size, so this estimate holds uniformly over all $A$. The value $z=\sqrt3/2$ maximizes the limiting expression for this estimate.
+\end{proof}
+
+\section{Attribution and verification}
+
+Pairwise-uniform affine evaluations and restriction to a half cube appear
+in Green and Wolf's torus construction for progression-free integer sets
+\cite[Lemma~2.1]{GW}. O'Bryant used a common dilation and translation
+for subsets of arbitrary integer sets avoiding progressions \cite{obryant}.
+Kohayakawa, Lee, R\"odl and Samotij selected representatives of occupied
+intervals indexed by a Sidon set in a random ambient set
+\cite[Lemma~7.8]{KLRS}. Pach and Zakharov used a finite integer model
+and random dilation into a half cube in their work on bi-Sidon sets
+\cite[Propositions~1--2]{PZ}.
+Here the independent additive shift makes the two-hit probability exactly
+\((L/P)^2\) for each label, and the deterministic pullback makes the
+result apply to every finite input.
+
+\paragraph{Formalization.}
+The finite estimates are formalized in the namespace \code{SidonCompression}. The theorem \code{real_sidon_bound} proves
+\eqref{eq:param}. The declaration \code{real_sidon_peak} gives the finite bound at $n_q$,
+and \code{strong_bertrand_sidon_real} proves Theorem~\ref{th:main}.
+The multiplicative prime-interval estimate used in Theorem~\ref{th:optimal}
+is \code{prime_between} from the pinned \emph{Prime Number Theorem and More}
+development \cite{pnt}.
+
+\section*{Acknowledgements and disclosure}
+The proof and the Lean formalization were produced with assistance from
+ChatGPT (OpenAI) and Claude (Anthropic). The main theorem,
+\code{SidonCompression.real_sidon_asymptotic}, was machine-checked in
+Lean 4.19.0 with Mathlib at revision \code{c44e0c8ee63c}.
+An independent rebuild reproduced the kernel's transitive axiom report.
+For both the main theorem and \code{prime_between}, the complete list is
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}.
+
+\begin{thebibliography}{99}\small\setlength{\itemsep}{1pt}
+\bibitem{abbott} H.\,L. Abbott. Sidon sets. \emph{Canadian Mathematical
+Bulletin} \textbf{33} (1990), 335--341.
+\href{https://doi.org/10.4153/CMB-1990-056-6}{doi:10.4153/CMB-1990-056-6}.
+\bibitem{BR} A. Bailleul and R. Riblet. On the largest Sidon subset in a
+finite subset of \(\mathbb R^N\). \emph{European Journal of Combinatorics} \textbf{139} (2027),
+article 104443. \href{https://doi.org/10.1016/j.ejc.2026.104443}{Journal record} and
+\href{https://arxiv.org/abs/2605.03181}{arXiv:2605.03181}.
+\bibitem{erdos} T. Bloom, ed. Erd\H{o}s Problems, Problem \#530.
+\href{https://www.erdosproblems.com/530}{Problem statement} and
+\href{https://www.erdosproblems.com/forum/thread/530}{discussion}.
+\bibitem{GW} B. Green and J. Wolf. A note on Elkin's improvement of
+Behrend's construction. In D. Chudnovsky and G. Chudnovsky (eds.), \emph{Additive Number Theory}, Springer, 2010, 141--144. \href{https://arxiv.org/abs/0810.0732}{arXiv:0810.0732}.
+\bibitem{KLRS} Y. Kohayakawa, S.\,J. Lee, V. R\"odl and W. Samotij.
+The number of Sidon sets and the maximum size of Sidon sets contained in
+a sparse random set of integers. \emph{Random Structures \& Algorithms}
+\textbf{46} (2015), 1--25. \href{https://doi.org/10.1002/rsa.20496}{doi:10.1002/rsa.20496}.
+\bibitem{KSS} J. Koml\'os, M. Sulyok and E. Szemer\'edi.
+Linear problems in combinatorial number theory. \emph{Acta Mathematica
+Academiae Scientiarum Hungaricae} \textbf{26} (1975), 113--121.
+\href{https://doi.org/10.1007/BF01895954}{doi:10.1007/BF01895954}.
+\bibitem{obryant} K. O'Bryant. Thick subsets that do not contain
+arithmetic progressions. \emph{Integers} \textbf{13} (2013), A18.
+\href{https://math.colgate.edu/~integers/n18/n18.pdf}{Full text}.
+\bibitem{PZ} J. Pach and D. Zakharov. Ruzsa's problem on bi-Sidon sets.
+\emph{Combinatorica} \textbf{45} (2025), article 26.
+\href{https://doi.org/10.1007/s00493-025-00151-5}{doi:10.1007/s00493-025-00151-5}.
+\bibitem{riddell} J. Riddell. On sets of numbers containing no $l$ terms in arithmetic progression.
+\emph{Nieuw Archief voor Wiskunde} (3) \textbf{17} (1969), 204--209.
+\bibitem{ruzsa} I.\,Z. Ruzsa. Solving a linear equation in a set of
+integers I. \emph{Acta Arithmetica} \textbf{65} (1993), 259--282.
+\href{https://doi.org/10.4064/aa-65-3-259-282}{doi:10.4064/aa-65-3-259-282}.
+\bibitem{scinet} Proof-Track Strategist. Improved constant for guaranteed
+Sidon subsets (Erd\H{o}s \#530): $\sqrt{3}/9\to\sqrt{6}/9$, sharpening one estimate in Bailleul--Riblet. Public agent-authored finding, SciNet,
+2 August 2026. \href{https://api.scinet.pub/f/6e6583f0-89cb-4c69-9f76-a7e5ed0da6e8}{Finding 6e6583f0}.
+\bibitem{pnt}
+A. Kontorovich, T. Tao and contributors, \emph{Prime Number Theorem and More}, Lean formalization, \href{https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/tree/426b540a86d5b4a103cec5528e68168ea172da66}{revision 426b540a86d5}, \code{PrimeNumberTheoremAnd.Consequences}.
+\end{thebibliography}
+\end{document}
